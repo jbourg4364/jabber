@@ -1,0 +1,70 @@
+html {
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+    background-color: #f0f2f5;
+}
+
+#logo {
+    color: maroon;
+    font-size: 55px;
+    letter-spacing: 2px;
+}
+
+.home-logo-container {
+    text-align: center;
+    margin-top: 100px;
+}
+
+.home-login-form {
+    text-align: center;
+    padding: 20px;
+    border-radius: 6px;
+    background-color: white;
+    width: 400px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+input {
+    margin: 10px;
+    font-size: 20px;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid rgb(188, 188, 188);
+    width: 350px;
+}
+
+.login-button {
+    font-size: 20px;
+    border-radius: 6px;
+    width: 380px;
+    height: 50px;
+    font-weight: 700;
+    border: none;
+    margin: 10px;
+    background-color: maroon;
+    color: white;
+}
+
+.login-button:hover {
+    cursor: pointer;
+}
+
+.create-account-button {
+    font-size: 17px;
+    border-radius: 6px;
+    width: fit-content;
+    height: 50px;
+    font-weight: 700;
+    border: none;
+    margin: 10px;
+    background-color: rgb(46, 187, 46);
+    color: white;
+    padding: 10px;
+}
+
+.create-account-button:hover {
+    cursor: pointer;
+    background-color: rgb(39, 160, 39);
+}
