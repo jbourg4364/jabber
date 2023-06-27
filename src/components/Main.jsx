@@ -2,7 +2,8 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Home, Register, Me, Header } from './';
 import { useEffect, useState } from 'react';
-import { getMe } from '../api-client/auth'
+import { getMe } from '../api-client/auth';
+
 
 const Main = () => {
   const [user, setUser] = useState({});
@@ -25,6 +26,14 @@ const Main = () => {
 
   return (
     <div>
+      {isLoggedIn ? <Header 
+          user={user}
+          setUser={setUser}
+          setIsLoggedIn={setIsLoggedIn}
+          isLoggedIn={isLoggedIn}
+          token={token}
+          setToken={setToken}
+      /> : null}
       <Routes>
         <Route
           path='/'

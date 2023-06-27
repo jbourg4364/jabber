@@ -1,11 +1,11 @@
 import React from 'react';
-import { Header } from './';
+import { Posts } from './';
+
 
 const Me = () => {
   return (
     <div>
-      <h1>Welcome to jabber!</h1>
-        <Header />
+      <Posts />
     </div>
   )
 }

@@ -1,0 +1,22 @@
+/* Posts.css */
+.ind-post {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    text-align: center;
+  }
+  
+  .ind-post p {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+  
+  .ind-post h3 {
+    font-size: 15px;
+    color: #888;
+    margin-bottom: 3px;
+    color: maroon;
+  }
+
+  

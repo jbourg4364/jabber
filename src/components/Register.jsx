@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import './Register.css';
 import { registerUser } from '../api-client/auth';
-import { useNavigate } from 'react-router';
+import { useNavigate, Link } from 'react-router-dom';
 
 
 
@@ -104,7 +104,10 @@ const Register = ({setIsLoggedIn, setToken}) => {
           </div>
         </form>
         <div>
-          <h3>Already have an account?</h3>
+          <Link to='/'>
+            <h3 className='register-login'>Already have an account?</h3>
+          </Link>
+          
         </div>
       </div>
     </div>

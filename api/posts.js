@@ -4,7 +4,7 @@ const { getAllPosts } = require('../db');
 
 
 
-postsRouter.post('/', async (req, res, next) => {
+postsRouter.get('/', async (req, res, next) => {
     try {
         const posts = await getAllPosts();
         res.send(posts);
