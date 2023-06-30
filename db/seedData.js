@@ -30,7 +30,7 @@ async function createTables() {
         CREATE TABLE posts (
             id SERIAL PRIMARY KEY,
             description TEXT NOT NULL,
-            "creatorId" INTEGER REFERENCES users(id),
+            "creatorId" VARCHAR(255) REFERENCES users(username),
             postdate TIMESTAMP DEFAULT NOW(),
             likes INTEGER DEFAULT 0,
             comments INTEGER DEFAULT 0,
@@ -123,6 +123,7 @@ async function createInitialUsers() {
         const users = await Promise.all(usersToCreate.map(createUser));
 
         console.log('Users created:', users)
+
     } catch (error) {
         throw error; 
     }
@@ -134,70 +135,70 @@ async function createInitialPost() {
         const postsToCreate = [
             {
               description: 'This is the first post on Jabber and I love it!',
-              creatorId: 1,
+              creatorId: 'firstUser123',
               postdate: new Date(),
               likes: 3,
               comments: 4
             },
             {
               description: 'This is the second post on Jabber and I am really enjoying this site so far!',
-              creatorId: 2,
+              creatorId: 'secondUser123',
               postdate: new Date(),
               likes: 31,
               comments: 14
             },
             {
               description: 'Just had an amazing meal at a new restaurant. Highly recommend!',
-              creatorId: 3,
+              creatorId: 'thirdUser123',
               postdate: new Date(),
               likes: 7,
               comments: 2
             },
             {
               description: 'Visited a beautiful beach today. The view was breathtaking!',
-              creatorId: 4,
+              creatorId: 'fourthUser123',
               postdate: new Date(),
               likes: 15,
               comments: 8
             },
             {
               description: 'Excited to announce that I got accepted into my dream university!',
-              creatorId: 5,
+              creatorId: 'fifthUser123',
               postdate: new Date(),
               likes: 23,
               comments: 10
             },
             {
               description: 'Had an amazing time hiking in the mountains. The scenery was stunning!',
-              creatorId: 6,
+              creatorId: 'sixthUser123',
               postdate: new Date(),
               likes: 9,
               comments: 3
             },
             {
               description: 'Just finished reading an incredible book. It kept me hooked until the last page!',
-              creatorId: 7,
+              creatorId: 'seventhUser123',
               postdate: new Date(),
               likes: 12,
               comments: 6
             },
             {
               description: 'Spent the day volunteering at a local shelter. It was a rewarding experience!',
-              creatorId: 8,
+              creatorId: 'eighthUser123',
               postdate: new Date(),
               likes: 5,
               comments: 1
             },
             {
               description: 'Attended a fascinating conference today. Learned so many new things!',
-              creatorId: 9,
+              creatorId: 'ninthUser123',
               postdate: new Date(),
               likes: 18,
               comments: 7
             },
             {
               description: 'Just adopted the most adorable puppy. My heart is full!',
-              creatorId: 10,
+              creatorId: 'tenthUser123',
               postdate: new Date(),
               likes: 27,
               comments: 12

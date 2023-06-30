@@ -1,14 +1,15 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { Home, Register, Me, Header } from './';
 import { useEffect, useState } from 'react';
 import { getMe } from '../api-client/auth';
-
 
 const Main = () => {
   const [user, setUser] = useState({});
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -18,22 +19,25 @@ const Main = () => {
           setUser(fetchedUser);
           setIsLoggedIn(true);
           localStorage.setItem('currentUser', fetchedUser.username);
+          navigate('/me'); 
         }
       } 
     };
     fetchUser();
-  }, [token]);
+  }, [token, navigate]);
 
   return (
     <div>
-      {isLoggedIn ? <Header 
+      {location.pathname !== '/' && (
+        <Header 
           user={user}
           setUser={setUser}
           setIsLoggedIn={setIsLoggedIn}
           isLoggedIn={isLoggedIn}
           token={token}
           setToken={setToken}
-      /> : null}
+        />
+      )}
       <Routes>
         <Route
           path='/'
@@ -66,9 +70,8 @@ const Main = () => {
         />}
         />
       </Routes>
-      
     </div>
-  )
+  );
 };
 
 export default Main;

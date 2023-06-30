@@ -13,3 +13,36 @@ export const getAllPosts = async () => {
         console.error(error);
     }
 };
+
+export const getAllUsers = async () => {
+    try {
+        const response = await fetch(`${BASE}/users`);
+        const result = response.json()
+        return result;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+export const createPost = async (description) => {
+    try {
+        const user = localStorage.getItem('currentUser');
+        
+        const response = await fetch(`${BASE}/posts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        
+        },
+        body: JSON.stringify({
+          description,
+          user
+        })
+        })
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch (error) {
+        console.error(error);
+    }
+}

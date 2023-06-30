@@ -1,22 +1,37 @@
 /* Posts.css */
+
+
 .ind-post {
     border: 1px solid #ddd;
     padding: 10px;
     margin-bottom: 10px;
     background-color: #fff;
     text-align: center;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
   }
   
   .ind-post p {
     font-size: 18px;
-    margin-bottom: 5px;
   }
   
   .ind-post h3 {
-    font-size: 15px;
+    font-size: 20px;
     color: #888;
     margin-bottom: 3px;
     color: maroon;
   }
+
+  .posts-bottom-container {
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  hr {
+    width: 90vw;
+  }
+
 
   

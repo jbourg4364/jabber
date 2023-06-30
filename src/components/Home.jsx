@@ -15,7 +15,7 @@ const Home = ({ setIsLoggedIn, setUser }) => {
     e.preventDefault();
     const usertoAuth = { username: username, password: password };
     const data = await loginUser(usertoAuth);
-    console.log(data)
+    
     if (data.token) {
       setIsLoggedIn(true);
       setUsername('');

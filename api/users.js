@@ -6,7 +6,7 @@ require('dotenv').config();
 const SECRET = process.env.JWT_SECRET;
 const bcrypt = require('bcrypt');
 const { requireUser } = require('./utils');
-const { createUser, getUserByUsername } = require('../db');
+const { createUser, getUserByUsername, getUserById, getAllUsers } = require('../db');
 
 
 
@@ -102,6 +102,19 @@ usersRouter.get('/me', requireUser, async (req, res, next) => {
         next(error);
     }
 });
+
+usersRouter.get('/', async (req, res, next) => {
+    try {
+      const response = await getAllUsers();
+      
+      
+      res.send(response);
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  
 
 
 
