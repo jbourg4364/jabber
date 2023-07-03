@@ -4,9 +4,10 @@ import { NavLink } from 'react-router-dom';
 import { AddPost } from './'
 
 
-const Header = ({setToken, setIsLoggedIn, user, token}) => {
+const Header = ({setToken, setIsLoggedIn, user, token, setPosts, posts}) => {
   const [currentUser, setCurrentUser] = useState('');
   const [addPost, showAddPost] = useState(false);
+  
 
   const handleLogout = async () => {
     localStorage.removeItem('token');
@@ -33,17 +34,22 @@ const Header = ({setToken, setIsLoggedIn, user, token}) => {
         </NavLink>
         <div className='left-nav'>
           <NavLink className='nav'>
-          <i className="fa-solid fa-plus"></i>
+            <i className="fa-solid fa-magnifying-glass"></i>
+          </NavLink>
+          <NavLink className='nav'>
+          <i className="fa-solid fa-envelope"></i>
+          </NavLink>
+          <NavLink className='nav'>
+            <i className="fa-solid fa-user"></i>
           </NavLink>
           <NavLink to='/' className='nav' onClick={handleLogout}>
-          Logout
+            Logout
           </NavLink>
         </div>
       </header>
       <div className='banner-post-container' onClick={handleAddPost}>
-        {addPost ? <AddPost user={user} token={token}/> : <h3 className='addPost-default'>What's on your mind, <em>{currentUser}</em>?</h3>}
+        {addPost ? <AddPost user={user} token={token} posts={posts} setPosts={setPosts} showAddPost={showAddPost}/> : <h3 className='addPost-default'>What's on your mind, <em>{user.username}</em>?</h3>}
       </div>
-      <hr></hr>
     </div>
   )
 }

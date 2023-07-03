@@ -1,53 +1,77 @@
-import React, { useEffect, useState } from 'react';
-import { getAllPosts, getAllUsers } from '../api-client';
+import React, {useState, useEffect} from 'react';
 import './Posts.css';
+import { getAllPosts, getAllUsers, increaseLikes } from '../api-client';
 
-const Posts = () => {
-  const [posts, setPosts] = useState([]);
-  const [users, setUsers] = useState([]);
+
+const Posts = ({ posts, setPosts }) => {
+  const [likedPosts, setLikedPosts] = useState([]);
 
   useEffect(() => {
-    fetchPosts();
-    fetchUsers();
-
-  }, []);
-
-  const fetchPosts = async () => {
-    try {
-      const response = await getAllPosts();
-      const sortedPosts = response.sort((a, b) => (b.postdate) - (a.postdate));
+    const fetchPosts = async () => {
+      const updatedPosts = await getAllPosts();
+      const sortedPosts = updatedPosts.sort((a, b) => a.postdate - b.postdate)
       setPosts(sortedPosts);
-    } catch (error) {
-      console.error('Error loading all posts');
-    }
-  };
-  
+    };
+    fetchPosts();
+  }, [])
 
-  const fetchUsers = async () => {
-    try {
-      const response = await getAllUsers();
-      setUsers(response)
-    } catch (error) {
-      console.error('Error loading all users')
-    }
+  const handleLikes = async (id) => {
+    setLikedPosts([...likedPosts, id]);
+    await increaseLikes(id);
+
+    const updatedPosts = await getAllPosts();
+    const sortedPosts = updatedPosts.sort((a, b) => a.postdate - b.postdate)
+    setPosts(sortedPosts);
   };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = { year: 'numeric', month: 'long', day: 'numeric'};
+    return date.toLocaleDateString(undefined, options)
+  };
+
+  const formatTime = (dateString) => {
+    const date = new Date(dateString);
+    const options = { hour: 'numeric', minute: 'numeric'};
+    return date.toLocaleTimeString(undefined, options);
+  }
 
 
   return (
     <div>
-      {posts.map((post) => (
-        <div key={post.id} className="ind-post">
-          <h3>{post.creatorId}</h3>
-          <p>{post.description}</p>
-          <hr></hr>
-          <div className='posts-bottom-container'>
-            <h3><i className="fa-solid fa-heart"></i> {post.likes}</h3>
-            <h3>Comments: {post.comments}</h3>
+      {Array.isArray(posts) && posts.length > 0 ? (
+        posts.map((post) => (
+          <div key={post.id} className="ind-post">
+            <h3 className="author">{post.creatorId}</h3>
+            <em>{`${formatDate(post.postdate)}`}</em> 
+            <br />
+            <em>{` ${formatTime(post.postdate)}`}</em>
+            <p>{post.description}</p>
+            <hr />
+            <div className="posts-bottom-container">
+              <h3>
+                <i
+                  className={
+                    likedPosts &&
+                    Array.isArray(likedPosts) &&
+                    likedPosts.includes(post.id)
+                      ? "fa-solid fa-heart"
+                      : "fa-regular fa-heart"
+                  }
+                  onClick={() => handleLikes(post.id)}
+                />{" "}
+                {post.likes}
+              </h3>
+              <h3>Comments: {post.comments}</h3>
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      ) : (
+        <p>No posts available</p>
+      )}
     </div>
   );
-}
+};
 
 export default Posts;
+

@@ -1,16 +1,17 @@
 /* Posts.css */
-
-
 .ind-post {
     border: 1px solid #ddd;
     padding: 10px;
     margin-bottom: 10px;
     background-color: #fff;
     text-align: center;
-    height: 200px;
-    display: flex;
+    height: 225px;
+    display: block;
     flex-direction: column;
-    justify-content: space-evenly;
+    border-radius: 5%;
+    width: 45vw;
+    margin-left: auto;
+    margin-right: auto;
   }
   
   .ind-post p {
@@ -22,16 +23,34 @@
     color: #888;
     margin-bottom: 3px;
     color: maroon;
+    margin-top: 1px;
   }
 
   .posts-bottom-container {
     display: flex;
     justify-content: space-evenly;
+    padding: 5px;
   }
 
   hr {
-    width: 90vw;
+    margin-top: 45px;
+    width: 45vw;
   }
 
+  .author {
+    font-weight: 600;
+  }
+
+  @media screen and (max-width: 800px) {
+    hr {
+      width: 85vw;
+    }
+
+    .ind-post {
+      width: 85vw;
+      margin-left: auto;
+      border-radius: 5%;
+    }
+  }
 
   

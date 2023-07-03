@@ -2,10 +2,11 @@ import React, { useState, useRef } from 'react';
 import './Register.css';
 import { registerUser } from '../api-client/auth';
 import { useNavigate, Link } from 'react-router-dom';
+import { getMe } from '../api-client/auth';
 
 
 
-const Register = ({setIsLoggedIn, setToken}) => {
+const Register = ({setIsLoggedIn, setToken, user, setUser}) => {
   const [username, setUsername] = useState('');
   const [firstname, setFirstName] = useState('');
   const [lastname, setLastName] = useState('');
@@ -33,6 +34,8 @@ const Register = ({setIsLoggedIn, setToken}) => {
         localStorage.setItem('currentUser', result.username);
         localStorage.setItem('token', result.token);
         window.alert(`Congratulations! You're registered with jabber!`);
+        const fetchedUser = await getMe(token)
+        setUser(fetchedUser)
         navigate('/')
       }
     }

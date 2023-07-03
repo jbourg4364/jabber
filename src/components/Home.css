@@ -43,7 +43,7 @@ input {
 .login-button {
     font-size: 20px;
     border-radius: 6px;
-    width: 380px;
+    width: 350px;
     height: 50px;
     font-weight: 700;
     border: none;
@@ -72,4 +72,29 @@ input {
 .create-account-button:hover {
     cursor: pointer;
     background-color: rgb(39, 160, 39);
+}
+
+.divider {
+    width: 300px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media screen and (max-width: 775px) {
+    .home-login-form {
+        width: 80vw;
+    }
+
+    input {
+        width: 70vw;
+    }
+
+    .login-button {
+        width: 70vw;
+    }
+
+    .divider {
+        width: 80vw;
+    }
 }

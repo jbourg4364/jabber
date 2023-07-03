@@ -40,8 +40,25 @@ export const createPost = async (description) => {
         })
         })
         const data = await response.json();
-        console.log(data)
+        
         return data;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export const increaseLikes = async (id) => {
+    try {
+        const response = await fetch(`${BASE}/posts/${id}`, {
+            method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        
+        },
+        })
+        const result = await response.json();
+        // console.log(result.likes)
+        return result;
     } catch (error) {
         console.error(error);
     }

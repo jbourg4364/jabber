@@ -2,10 +2,10 @@ import React from 'react';
 import { Posts } from './';
 
 
-const Me = () => {
+const Me = ({setPosts, posts, newPost, user, likedPosts, setLikedPosts}) => {
   return (
     <div>
-      <Posts />
+      <Posts setPosts={setPosts} posts={posts} newPost={newPost} setLikedPosts={setLikedPosts} likedPosts={likedPosts} user={user}/>
     </div>
   )
 }

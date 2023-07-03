@@ -13,9 +13,11 @@ export const getMe = async (token) => {
             },
         });
 
-        const result = await response.json();
-        // console.log(result);
-        return result;
+        if(!response.ok) {
+          throw new Error('Request failed')
+        }
+
+        return await response.json();
     } catch (error) {
         console.error(error);
     }

@@ -11,6 +11,7 @@ const Home = ({ setIsLoggedIn, setUser }) => {
   const navigate = useNavigate();
 
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const usertoAuth = { username: username, password: password };
@@ -65,7 +66,7 @@ const Home = ({ setIsLoggedIn, setUser }) => {
         </div>
         <div>
           <h4>Forgot password?</h4>
-          <hr />
+          <hr className='divider'/>
         </div>
         <div>
           <Link to='/register'>

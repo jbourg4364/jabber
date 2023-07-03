@@ -1,0 +1,42 @@
+html {
+    overflow-x: hidden;
+}
+
+.post-container {
+    width: 95vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.postButton {
+    height: 55px;
+    background-color: maroon;
+    color: white;
+    font-size: 20px;
+    border-radius: 10%;
+  
+}
+
+.postButton:hover {
+    cursor: pointer;
+    background-color: rgb(99, 1, 1);
+}
+
+.addPost-default {
+    letter-spacing: 1px;
+    background-color: rgb(231, 231, 231);
+    padding: 10px;
+    color: rgb(87, 87, 87);
+    width: 35vw;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 5%;
+}
+
+@media screen and (max-width: 775px) {
+    .addPost-default {
+        width: 80vw;
+    }
+}

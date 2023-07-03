@@ -78,11 +78,46 @@ async function editPost(id, fields = {}) {
     }
 };
 
+async function increaseLikes(id) {
+    try {
+        const { rows: [post] } = await client.query(`
+        UPDATE posts
+        SET likes = likes + 1
+        WHERE id = $1
+        RETURNING *;
+        `, [id]);
+
+        if(post) {
+            console.log('Likes increased by 1!')
+            return post;
+        } else {
+            console.log('Post not found')
+        }
+    } catch (error) {
+        throw error;
+    }
+};
+
+async function getPostById(id) {
+    try {
+        const { rows: [post] } = await client.query(`
+        SELECT * FROM posts
+        WHERE id = $1;
+        `, [id]);
+
+        return post;
+    } catch (error) {
+        throw error;
+    }
+}
+
 
 module.exports = {
     createPost,
     getPostsByUser,
     getAllPosts,
     deletePost,
-    editPost
+    editPost,
+    increaseLikes,
+    getPostById
 }
