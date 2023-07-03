@@ -6,7 +6,7 @@ import { getMe } from '../api-client/auth';
 
 
 
-const Register = ({setIsLoggedIn, setToken, user, setUser}) => {
+const Register = ({setIsLoggedIn, setToken, user, setUser, token}) => {
   const [username, setUsername] = useState('');
   const [firstname, setFirstName] = useState('');
   const [lastname, setLastName] = useState('');
@@ -26,12 +26,12 @@ const Register = ({setIsLoggedIn, setToken, user, setUser}) => {
     } else {
       const result = await registerUser({ firstname, lastname, email, username, password });
 
-      console.log(result);
+
 
       if (result.token) {
         setToken(result.token);
         setIsLoggedIn(true);
-        localStorage.setItem('currentUser', result.username);
+        localStorage.setItem('currentUser', result.user.username);
         localStorage.setItem('token', result.token);
         window.alert(`Congratulations! You're registered with jabber!`);
         const fetchedUser = await getMe(token)
@@ -45,7 +45,7 @@ const Register = ({setIsLoggedIn, setToken, user, setUser}) => {
     <div className='register-container'>
       <h1>Sign Up</h1>
       <h3>It's quick and easy.</h3>
-      <hr />
+      <hr className='register-hr'/>
       <div className='register-form-container'>
         <form ref={inputElement} onSubmit={handleSubmit}>
           <input 

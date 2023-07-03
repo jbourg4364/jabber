@@ -2,29 +2,31 @@ import React, { useEffect, useState } from 'react';
 import './Header.css';
 import { NavLink } from 'react-router-dom';
 import { AddPost } from './'
+import { getMe } from '../api-client/auth';
 
 
-const Header = ({setToken, setIsLoggedIn, user, token, setPosts, posts}) => {
+const Header = ({setToken, setIsLoggedIn, user, token, setPosts, posts, setUser}) => {
   const [currentUser, setCurrentUser] = useState('');
   const [addPost, showAddPost] = useState(false);
   
 
   const handleLogout = async () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('currentUser');
+    setCurrentUser('');
     setIsLoggedIn(false);
     setToken('');
-  }
+  };
+  
 
   const handleAddPost = async () => {
     showAddPost(true);
   }
-  
+
   useEffect(() => {
-    const storedUser = localStorage.getItem('currentUser');
-   
-    setCurrentUser(storedUser);
-  }, []); 
+    setCurrentUser(localStorage.getItem("currentUser"));
+  }, [])
+  
+  
 
   return (
     <div>
@@ -48,7 +50,7 @@ const Header = ({setToken, setIsLoggedIn, user, token, setPosts, posts}) => {
         </div>
       </header>
       <div className='banner-post-container' onClick={handleAddPost}>
-        {addPost ? <AddPost user={user} token={token} posts={posts} setPosts={setPosts} showAddPost={showAddPost}/> : <h3 className='addPost-default'>What's on your mind, <em>{user.username}</em>?</h3>}
+        {addPost ? <AddPost user={user} token={token} posts={posts} setPosts={setPosts} showAddPost={showAddPost} currentUser={currentUser} setCurrentUser={setCurrentUser}/> : <h3 className='addPost-default'>What's on your mind, {currentUser}?</h3>}
       </div>
     </div>
   )

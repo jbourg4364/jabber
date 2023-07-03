@@ -74,5 +74,9 @@ header {
       padding-left: 0px;
     }
 
+    header {
+      margin: 0;
+    }
+
   }
   

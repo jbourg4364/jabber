@@ -18,10 +18,10 @@ app.use((req, res, next) => {
 const apiRouter = require('./api');
 app.use('/api', apiRouter);
 
-// app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, 'build')));
 
 app.use((req, res, next) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 app.use((err, req, res, next) => {

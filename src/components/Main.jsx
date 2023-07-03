@@ -7,7 +7,7 @@ import { getAllPosts, getAllUsers } from '../api-client';
 import './Main.css';
 
 const Main = () => {
-  const [user, setUser] = useState('');
+  const [user, setUser] = useState(localStorage.getItem("currentUser"));
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [posts, setPosts] = useState([]);
@@ -21,17 +21,23 @@ const Main = () => {
   useEffect(() => {
     const fetchUser = async () => {
       if (token) {
-        const fetchedUser = await getMe(token);
-        if (fetchedUser) {
-          setUser(fetchedUser);
-          setIsLoggedIn(true);
-          localStorage.setItem("currentUser", fetchedUser.username);
-          navigate("/me");
+        try {
+          const fetchedUser = await getMe(token);
+          if (fetchedUser) {
+            setUser(fetchedUser.username);
+            setIsLoggedIn(true);
+            navigate("/me");
+          }
+        } catch (error) {
+          // Handle any errors that occur during the API call
+          console.error("Error fetching user:", error);
         }
       }
     };
+  
     fetchUser();
   }, [token, navigate]);
+  
 
   useEffect(() => {
     fetchPosts();
@@ -86,6 +92,7 @@ const Main = () => {
               token={token}
               setIsLoggedIn={setIsLoggedIn}
               setUser={setUser}
+              setToken={setToken}
             />
           }
         />
@@ -129,6 +136,8 @@ const Main = () => {
         newPost={newPost}
         addNewPost={addNewPost}
         user={user}
+        token={token}
+        setToken={setToken}
        
       />)}
     </div>
