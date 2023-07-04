@@ -9,19 +9,21 @@ const Posts = ({ posts, setPosts }) => {
   useEffect(() => {
     const fetchPosts = async () => {
       const updatedPosts = await getAllPosts();
-      const sortedPosts = updatedPosts.sort((a, b) => a.postdate - b.postdate)
+      const sortedPosts = updatedPosts.sort((a, b) => new Date(b.postdate) - new Date(a.postdate));
       setPosts(sortedPosts);
     };
     fetchPosts();
   }, [])
 
   const handleLikes = async (id) => {
-    setLikedPosts([...likedPosts, id]);
-    await increaseLikes(id);
-
-    const updatedPosts = await getAllPosts();
-    const sortedPosts = updatedPosts.sort((a, b) => a.postdate - b.postdate)
-    setPosts(sortedPosts);
+    if (!likedPosts.includes(id)) { // Check if the post has not been liked
+      setLikedPosts([...likedPosts, id]);
+      await increaseLikes(id);
+  
+      const updatedPosts = await getAllPosts();
+      const sortedPosts = updatedPosts.sort((a, b) => new Date(b.postdate) - new Date(a.postdate));
+      setPosts(sortedPosts);
+    }
   };
 
   const formatDate = (dateString) => {

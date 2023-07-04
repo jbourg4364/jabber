@@ -116,6 +116,13 @@ async function createInitialUsers() {
               email: 'tenthUser@gmail.com',
               firstname: 'Tenth',
               lastname: 'Tenthlast',
+            },
+            {
+              username: 'testUser504',
+              password: 'test1234',
+              email: 'testUser@gmail.com',
+              firstname: 'Test',
+              lastname: 'User',
             }
           ];
           

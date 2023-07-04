@@ -8,7 +8,7 @@ const AddPost = ({ user, posts, setPosts, showAddPost }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const createdPost = await createPost(newPost, user);
-    setPosts((prevPosts) => [...prevPosts, createdPost]);
+    setPosts((prevPosts) => [createdPost, ...prevPosts]);
     setNewPost('');
     showAddPost(false);
   };

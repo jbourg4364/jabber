@@ -41,7 +41,7 @@ const Header = ({setToken, setIsLoggedIn, user, token, setPosts, posts, setUser}
           <NavLink className='nav'>
           <i className="fa-solid fa-envelope"></i>
           </NavLink>
-          <NavLink className='nav'>
+          <NavLink to='/profile' className='nav'>
             <i className="fa-solid fa-user"></i>
           </NavLink>
           <NavLink to='/' className='nav' onClick={handleLogout}>

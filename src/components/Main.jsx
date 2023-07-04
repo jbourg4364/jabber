@@ -1,10 +1,10 @@
-import React from 'react';
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { Home, Register, Me, Header, Posts, AddPost } from './';
-import { useEffect, useState } from 'react';
-import { getMe } from '../api-client/auth';
-import { getAllPosts, getAllUsers } from '../api-client';
-import './Main.css';
+import React from "react";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { Home, Register, Me, Header, Posts, AddPost, Profile } from "./";
+import { useEffect, useState } from "react";
+import { getMe } from "../api-client/auth";
+import { getAllPosts, getAllUsers } from "../api-client";
+import "./Main.css";
 
 const Main = () => {
   const [user, setUser] = useState(localStorage.getItem("currentUser"));
@@ -13,7 +13,6 @@ const Main = () => {
   const [posts, setPosts] = useState([]);
   const [users, setUsers] = useState([]);
   const [newPost, addNewPost] = useState([]);
-
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -34,24 +33,19 @@ const Main = () => {
         }
       }
     };
-  
+
     fetchUser();
   }, [token, navigate]);
-  
 
   useEffect(() => {
     fetchPosts();
     fetchUsers();
-    
   }, []);
 
   const fetchPosts = async () => {
-    try {
-      const response = await getAllPosts();
-      setPosts(response);
-    } catch (error) {
-      console.error("Error loading all posts");
-    }
+    const updatedPosts = await getAllPosts();
+    const sortedPosts = updatedPosts.sort((a, b) => new Date(b.postdate) - new Date(a.postdate));
+    setPosts(sortedPosts);
   };
 
   const fetchUsers = async () => {
@@ -62,8 +56,6 @@ const Main = () => {
       console.error("Error loading all users");
     }
   };
-
-
 
   return (
     <div>
@@ -77,9 +69,15 @@ const Main = () => {
           setToken={setToken}
           posts={posts}
           setPosts={setPosts}
-       
         >
-          <AddPost posts={posts} setPosts={setPosts} user={user} setUser={setUser} token={token}/>
+          <AddPost
+            posts={posts}
+            setPosts={setPosts}
+            user={user}
+            setUser={setUser}
+            token={token}
+          />
+          
         </Header>
       )}
       <Routes>
@@ -119,27 +117,29 @@ const Main = () => {
               isLoggedIn={isLoggedIn}
               setUser={setUser}
               posts={posts}
-              setPosts={setPosts}
-            
-            >
-              
-            </Me>
+              setPosts={setPosts}></Me>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <Profile />
           }
         />
       </Routes>
       {location.pathname !== "/" && location.pathname !== "/register" && (
-      <Posts
-        posts={posts}
-        setPosts={setPosts}
-        users={users}
-        setUsers={setUsers}
-        newPost={newPost}
-        addNewPost={addNewPost}
-        user={user}
-        token={token}
-        setToken={setToken}
-       
-      />)}
+        <Posts
+          posts={posts}
+          setPosts={setPosts}
+          users={users}
+          setUsers={setUsers}
+          newPost={newPost}
+          addNewPost={addNewPost}
+          user={user}
+          token={token}
+          setToken={setToken}
+        />
+      )}
     </div>
   );
 };

@@ -103,18 +103,29 @@ usersRouter.get('/me', requireUser, async (req, res, next) => {
     }
 });
 
-usersRouter.get('/', async (req, res, next) => {
+
+usersRouter.get("/", async (req, res, next) => {
+  try {
+    const response = await getAllUsers();
+
+    res.send(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
+usersRouter.get('/me/profile', requireUser, async (req, res, next) => {
     try {
-      const response = await getAllUsers();
-      
-      
-      res.send(response);
+        console.log('HERE')
+        res.send(req.user);
     } catch (error) {
-      next(error);
+        next(error);
     }
   });
 
-  
+
+
+
 
 
 
