@@ -63,3 +63,38 @@ export const increaseLikes = async (id) => {
         console.error(error);
     }
 }
+
+export const getUserProfile = async (username, token) => {
+    try {
+        const response = await fetch(`${BASE}/users/profile/${username}`, {
+
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+    }});
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+export const deletePost = async ({ postId, token }) => {
+  try {
+    const response = await fetch(`${BASE}/users/profile/${postId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const result = await response.json();
+
+    if (result.error) {
+        throw new Error(result.message);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};

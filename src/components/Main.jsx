@@ -7,8 +7,8 @@ import { getAllPosts, getAllUsers } from "../api-client";
 import "./Main.css";
 
 const Main = () => {
-  const [user, setUser] = useState(localStorage.getItem("currentUser"));
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [user, setUser] = useState({});
+  const [token, setToken] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [posts, setPosts] = useState([]);
   const [users, setUsers] = useState([]);
@@ -25,8 +25,10 @@ const Main = () => {
           if (fetchedUser) {
             setUser(fetchedUser.username);
             setIsLoggedIn(true);
-            navigate("/me");
+            if (location.pathname === "/")
+              navigate("/me");
           }
+          
         } catch (error) {
           // Handle any errors that occur during the API call
           console.error("Error fetching user:", error);
@@ -35,7 +37,7 @@ const Main = () => {
     };
 
     fetchUser();
-  }, [token, navigate]);
+  }, [navigate]);
 
   useEffect(() => {
     fetchPosts();
@@ -53,7 +55,7 @@ const Main = () => {
       const response = await getAllUsers();
       setUsers(response);
     } catch (error) {
-      console.error("Error loading all users");
+      console.error("Error loading all users", error);
     }
   };
 
@@ -117,17 +119,18 @@ const Main = () => {
               isLoggedIn={isLoggedIn}
               setUser={setUser}
               posts={posts}
-              setPosts={setPosts}></Me>
+              setPosts={setPosts}>
+              </Me>
           }
         />
         <Route
-          path="/profile"
+          path='/profile'
           element={
-            <Profile />
+            <Profile user={user} token={token} setUser={setUser} setToken={setToken} posts={posts}/>
           }
         />
       </Routes>
-      {location.pathname !== "/" && location.pathname !== "/register" && (
+      {location.pathname !== "/" && location.pathname !== "/register" && location.pathname !== "/profile" && (
         <Posts
           posts={posts}
           setPosts={setPosts}

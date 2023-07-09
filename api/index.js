@@ -4,31 +4,32 @@ const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
 const { getUserById } = require('../db');
 
-router.use(async (req, res, next) => {
-    const prefix = 'Bearer';
-    const auth = req.header('Authorization');
+// router.use(async (req, res, next) => {
+  
+//     const prefix = 'Bearer';
+//     const auth = req.header('Authorization');
 
-    if (!auth) {
-        next();
-    } else if (auth.startsWith(prefix)) {
-        const token = auth.slice(prefix.length);
-        try {
-            const { id } = jwt.verify(token, JWT_SECRET);
-            req.user = await getUserById(id);
-            next();
-        } catch ({ message, name }) {
-            next({
-                message,
-                name
-            });
-        }
-    } else {
-        next ({
-            message: 'Authorization Error',
-            name: 'AuthorizationError'
-        });
-    }
-});
+//     if (!auth) {
+//         next();
+//     } else if (auth.startsWith(prefix)) {
+//         const token = auth.slice(prefix.length);
+//         try {
+//             const { id } = jwt.verify(token, JWT_SECRET);
+//             req.user = await getUserById(id);
+//             next();
+//         } catch ({ message, name }) {
+//             next({
+//                 message,
+//                 name
+//             });
+//         }
+//     } else {
+//         next ({
+//             message: 'Authorization Error',
+//             name: 'AuthorizationError'
+//         });
+//     }
+// });
 
 router.use((req, res, next) => {
     if (req.user) {

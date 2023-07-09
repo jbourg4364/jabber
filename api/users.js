@@ -5,10 +5,32 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const SECRET = process.env.JWT_SECRET;
 const bcrypt = require('bcrypt');
-const { requireUser } = require('./utils');
-const { createUser, getUserByUsername, getUserById, getAllUsers } = require('../db');
+const { createUser, getUserByUsername, getUserById, getAllUsers, getPostsByUser, getPostById, deletePost } = require('../db');
 
-
+const requireUser = async(req, res, next) => {
+    try {
+        const token = req.headers.authorization.split(' ')[1];
+        const decoded = jwt.verify(token, SECRET);
+        
+        const user = await getUserById(decoded.id);
+        
+        if (user) {
+          req.user = user;
+          next();
+        } else {
+          res.status(401).json({
+            error: 'InvalidCredentialsError',
+            message: 'Invalid token',
+          });
+        }
+      } catch (error) {
+        res.status(401).json({
+          error: 'UnauthorizedError',
+          message: 'You must be logged in to perform this action',
+          name: 'UnauthorizedError',
+        });
+      }
+};
 
 // POST /api/users/register
 usersRouter.post('/register', async (req, res, next) => {
@@ -87,6 +109,8 @@ usersRouter.post('/login', async (req, res, next) => {
                         id: user.id,
                         username: user.username,
                     },
+
+                    
                 });
             }
         };
@@ -114,16 +138,54 @@ usersRouter.get("/", async (req, res, next) => {
   }
 });
 
-usersRouter.get('/me/profile', requireUser, async (req, res, next) => {
+usersRouter.get('/profile/:username', requireUser, async (req, res, next) => {
     try {
-        console.log('HERE')
-        res.send(req.user);
+        const { username } = req.params;
+        const user = await getUserByUsername(username);
+
+        if(!user) {
+            return res.status(400).json({
+                error: 'UserNotFound',
+                message: `User ${username} not found`
+            });
+        };
+
+        res.send(user);
+
+
     } catch (error) {
         next(error);
     }
   });
 
+  usersRouter.delete('/profile/:postId', requireUser, async (req, res, next) => {
+    try {
+        const { postId } = req.params;
+        const post = await getPostById(postId);
 
+        if(!post) {
+            return res.status(404).json({
+                error: 'NotFoundError',
+                message: 'Post not found'
+            });
+        }
+       
+        if(post.creatorId !== req.user.username) {
+            return res.status(403).json({
+                error: 'Forbidden',
+                message: 'User is not allowed to delete this post'
+            });
+        }
+
+        const deletedPost = await deletePost(postId);
+        
+
+        res.status.json(deletedPost);
+    } catch (error) {
+        next(error);
+    }
+  })
+  
 
 
 

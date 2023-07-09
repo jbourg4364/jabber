@@ -3,11 +3,13 @@ import './Header.css';
 import { NavLink } from 'react-router-dom';
 import { AddPost } from './'
 import { getMe } from '../api-client/auth';
+import {Profile} from './';
 
 
 const Header = ({setToken, setIsLoggedIn, user, token, setPosts, posts, setUser}) => {
   const [currentUser, setCurrentUser] = useState('');
   const [addPost, showAddPost] = useState(false);
+
   
 
   const handleLogout = async () => {
