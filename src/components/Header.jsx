@@ -40,7 +40,7 @@ const Header = ({setToken, setIsLoggedIn, user, token, setPosts, posts, setUser}
           <NavLink className='nav'>
             <i className="fa-solid fa-magnifying-glass"></i>
           </NavLink>
-          <NavLink className='nav'>
+          <NavLink to='/messages' className='nav'>
           <i className="fa-solid fa-envelope"></i>
           </NavLink>
           <NavLink to='/profile' className='nav'>

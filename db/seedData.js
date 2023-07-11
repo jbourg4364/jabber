@@ -1,11 +1,12 @@
 const client = require('./client');
-const { createUser, createPost } = require('.');
+const { createUser, createPost, createMessage } = require('.');
 
 
 async function dropTables() {
     console.log('Dropping all tables...');
     try {
         await client.query(`
+        DROP TABLE IF EXISTS messages;
         DROP TABLE IF EXISTS posts;
         DROP TABLE IF EXISTS users;
         `);
@@ -35,6 +36,15 @@ async function createTables() {
             likes INTEGER DEFAULT 0,
             comments INTEGER DEFAULT 0,
             is_active BOOLEAN DEFAULT true
+        );
+
+        CREATE TABLE messages (
+          id SERIAL PRIMARY KEY,
+          description TEXT NOT NULL,
+          "creatorId" VARCHAR(255) REFERENCES users(username),
+          "senderId" VARCHAR(255) REFERENCES users(username),
+          postdate TIMESTAMP DEFAULT NOW(),
+          subject TEXT NOT NULL
         )
         `);
         console.log('Finished creating all tables...')
@@ -220,12 +230,33 @@ async function createInitialPost() {
     }
 };
 
+async function createInitialMessages() {
+  console.log('Creating initial messages...');
+  try {
+    const messagesToCreate = [
+      {
+        description: 'Welcome to Jabber!',
+        creatorId: 'fifthUser123',
+        senderId: 'firstUser123',
+        subject: 'A Messages from fifthUser123'
+      }
+    ]
+
+    const messages = await Promise.all(messagesToCreate.map(createMessage));
+    console.log('Messages created...', messages);
+
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function rebuildDB() {
     try {
         await dropTables();
         await createTables();
         await createInitialUsers();
         await createInitialPost();
+        await createInitialMessages();
     } catch (error) {
         console.log('Error during rebuildDB');
         throw error;

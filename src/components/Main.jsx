@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
-import { Home, Register, Me, Header, Posts, AddPost, Profile } from "./";
+import { Home, Register, Me, Header, Posts, AddPost, Profile, Messages } from "./";
 import { useEffect, useState } from "react";
 import { getMe } from "../api-client/auth";
 import { getAllPosts, getAllUsers } from "../api-client";
@@ -129,8 +129,12 @@ const Main = () => {
             <Profile user={user} token={token} setUser={setUser} setToken={setToken} posts={posts}/>
           }
         />
+        <Route 
+        path="/messages"
+        element={<Messages user={user} token={token} users={users}/>}
+        />
       </Routes>
-      {location.pathname !== "/" && location.pathname !== "/register" && location.pathname !== "/profile" && (
+      {location.pathname !== "/" && location.pathname !== "/register" && location.pathname !== "/profile" && location.pathname !== "/messages" && (
         <Posts
           posts={posts}
           setPosts={setPosts}

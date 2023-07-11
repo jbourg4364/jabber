@@ -86,7 +86,7 @@ export const deletePost = async ({ postId, token }) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-      },
+      }
     });
 
     const result = await response.json();
@@ -97,4 +97,43 @@ export const deletePost = async ({ postId, token }) => {
   } catch (error) {
     console.error(error);
   }
+};
+
+export const editPost = async (postId, token, description) => {
+    try {
+        const response = await fetch(`${BASE}/users/profile/${postId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ description })
+        });
+        
+        const result = await response.json();
+        if(result.error) {
+            throw new Error(result.message);
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+export const getUserMessages = async (username, token) => {
+    try {
+        const response = await fetch(`${BASE}/users/messages/${username}`, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            }
+        });
+
+        const result = await response.json();
+        
+        return result;
+    } catch (error) {
+        console.error(error);
+    }
 };

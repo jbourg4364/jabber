@@ -68,7 +68,7 @@ async function editPost(id, fields = {}) {
         const { rows: [post] } = await client.query(`
         UPDATE posts
         SET ${ setString }
-        WHERE id=${ id }
+        WHERE id=${id}
         RETURNING *;
         `, Object.values(fields));
 

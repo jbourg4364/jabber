@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const SECRET = process.env.JWT_SECRET;
 const bcrypt = require('bcrypt');
-const { createUser, getUserByUsername, getUserById, getAllUsers, getPostsByUser, getPostById, deletePost } = require('../db');
+const { createUser, getUserByUsername, getUserById, getAllUsers, getPostsByUser, getPostById, deletePost, editPost, createMessage, getAllMessages } = require('../db');
 
 const requireUser = async(req, res, next) => {
     try {
@@ -162,6 +162,7 @@ usersRouter.get('/profile/:username', requireUser, async (req, res, next) => {
     try {
         const { postId } = req.params;
         const post = await getPostById(postId);
+        console.log(post)
 
         if(!post) {
             return res.status(404).json({
@@ -184,7 +185,59 @@ usersRouter.get('/profile/:username', requireUser, async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-  })
+  });
+
+  usersRouter.patch('/profile/:postId', requireUser, async (req, res, next) => {
+    try {
+        const { postId } = req.params;
+        const post = await getPostById(postId);
+     
+        if(!post) {
+            return res.status(200).json({
+                error: 'NotFoundError',
+                message: 'Post not found',
+            })
+        };
+
+        if(post.creatorId !== req.user.username) {
+            return res.status(403).json({
+                error: 'ForbiddenError',
+                message: 'User is not allowed to update this post',
+            })
+        };
+
+        const { description } = req.body;
+        const updatePost = await editPost(postId, description);
+        
+        res.status(200).json(updatePost);
+    } catch (error) {
+        next(error);
+    }
+  });
+
+  usersRouter.get('/messages/:username', requireUser, async(req, res, next) => {
+    try {
+        const { username } = req.params;
+        const messages = await getAllMessages(username);
+        
+        res.status(200).json(messages);
+    } catch (error) {
+        next(error);
+    }
+  });
+
+  usersRouter.post('/messages/:username', requireUser, async(req, res, next) => {
+    try {
+        const { username } = req.params;
+        const { description, senderId, subject } = req.body;
+
+        const response = await createMessage({description: description, creatorId: username, senderId: senderId, subject: subject});
+
+        res.status(200).json(response);
+    } catch (error) {
+        next(error);
+    }
+  });
   
 
 
