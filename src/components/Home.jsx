@@ -65,7 +65,7 @@ const Home = ({ setIsLoggedIn, setUser }) => {
           <button className='login-button' type='submit'>Log In</button>
         </div>
         <div>
-          <h4>Forgot password?</h4>
+          {/* <h4>Forgot password?</h4> */}
           <hr className='divider'/>
         </div>
         <div>

@@ -10,6 +10,7 @@ async function createMessage({
         const {rows: [message]} = await client.query(`
         INSERT INTO messages(description, "creatorId", "senderId", subject)
         VALUES ($1, $2, $3, $4)
+        ON CONFLICT DO NOTHING
         RETURNING *;
         `, [description, creatorId, senderId, subject]);
 
@@ -32,7 +33,19 @@ async function getAllMessages(username) {
     }
 };
 
+async function deleteMessage(id) {
+    try {
+        await client.query(`
+        DELETE FROM messages
+        WHERE id = $1;
+        `, [id]);
+    } catch (error) {
+        throw error;
+    }
+}
+
 module.exports = {
     createMessage,
-    getAllMessages
+    getAllMessages,
+    deleteMessage
 }

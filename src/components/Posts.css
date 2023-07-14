@@ -5,7 +5,7 @@
     margin-bottom: 10px;
     background-color: #fff;
     text-align: center;
-    height: 225px;
+    height: fit-content;
     display: block;
     flex-direction: column;
     border-radius: 5%;

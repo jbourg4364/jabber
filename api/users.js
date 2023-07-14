@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const SECRET = process.env.JWT_SECRET;
 const bcrypt = require('bcrypt');
-const { createUser, getUserByUsername, getUserById, getAllUsers, getPostsByUser, getPostById, deletePost, editPost, createMessage, getAllMessages } = require('../db');
+const { createUser, getUserByUsername, getUserById, getAllUsers, getPostsByUser, getPostById, deletePost, editPost, createMessage, getAllMessages, deleteMessage } = require('../db');
 
 const requireUser = async(req, res, next) => {
     try {
@@ -228,16 +228,27 @@ usersRouter.get('/profile/:username', requireUser, async (req, res, next) => {
 
   usersRouter.post('/messages/:username', requireUser, async(req, res, next) => {
     try {
-        const { username } = req.params;
+        const { username: creatorId } = req.params;
         const { description, senderId, subject } = req.body;
 
-        const response = await createMessage({description: description, creatorId: username, senderId: senderId, subject: subject});
+        const response = await createMessage({description: description, creatorId, senderId, subject});
 
         res.status(200).json(response);
     } catch (error) {
         next(error);
     }
   });
+
+  usersRouter.delete('/messages/:username', requireUser, async(req, res, next) => {
+    try {
+        const { id } = req.body;
+
+        const response = await deleteMessage(id);
+        res.status(200).json(response)
+    } catch (error) {
+        next(error);
+    }
+  })
   
 
 

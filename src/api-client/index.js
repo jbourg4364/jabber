@@ -127,7 +127,7 @@ export const getUserMessages = async (username, token) => {
             headers: {
                 'Content-type': 'application/json',
                 Authorization: `Bearer ${token}`,
-            }
+            },
         });
 
         const result = await response.json();
@@ -136,4 +136,41 @@ export const getUserMessages = async (username, token) => {
     } catch (error) {
         console.error(error);
     }
+};
+
+export const sendMessage = async (username, token, description, senderId, subject) => {
+    try {
+        const response = await fetch(`${BASE}/users/messages/${username}`, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ description, senderId, subject })
+        });
+
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+export const deleteMessage = async (username, token, id) => {
+  try {
+    const response = await fetch(`${BASE}/users/messages/${username}`, {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ id })
+    });
+
+  
+
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
 };
