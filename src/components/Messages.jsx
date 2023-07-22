@@ -156,10 +156,14 @@ const Messages = ({ users }) => {
           <p className="message-description">{message.description}</p>
           <button
             onClick={() => handleReply(message.creatorId, message.subject)}
+            className="reply-button"
           >
             Reply
           </button>
-          <button onClick={() => handleDelete(message.id)}>Delete</button>
+          <button 
+          onClick={() => handleDelete(message.id)}
+          className="reply-button"
+          >Delete</button>
         </div>
       ))}
       <br></br>

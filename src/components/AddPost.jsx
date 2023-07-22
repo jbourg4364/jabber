@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { createPost } from '../api-client';
 import './AddPost.css';
 
-const AddPost = ({ user, posts, setPosts, showAddPost }) => {
+const AddPost = ({ user, setPosts, showAddPost }) => {
   const [newPost, setNewPost] = useState('');
 
   const handleSubmit = async (e) => {
@@ -23,6 +23,7 @@ const AddPost = ({ user, posts, setPosts, showAddPost }) => {
         onChange={(e) => setNewPost(e.target.value)}
         required
         className='addPost-input'
+        autoFocus
       />
       <button className='postButton'>Post</button>
     </form>

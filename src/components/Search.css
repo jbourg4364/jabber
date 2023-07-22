@@ -1,0 +1,24 @@
+input.search-input {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80vw;
+}
+
+form.search-field {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80vw;
+}
+
+#exit-search {
+    padding: 10px;
+}
+
+#exit-search:hover {
+    cursor: pointer;
+    color: maroon;
+}

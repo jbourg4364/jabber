@@ -1,61 +1,84 @@
-import React, { useEffect, useState } from 'react';
-import './Header.css';
-import { NavLink } from 'react-router-dom';
-import { AddPost } from './'
-import { getMe } from '../api-client/auth';
-import {Profile} from './';
+import React, { useEffect, useState } from "react";
+import "./Header.css";
+import { NavLink } from "react-router-dom";
+import { AddPost, Search } from "./";
 
-
-const Header = ({setToken, setIsLoggedIn, user, token, setPosts, posts, setUser}) => {
-  const [currentUser, setCurrentUser] = useState('');
+const Header = ({
+  setToken,
+  setIsLoggedIn,
+  user,
+  token,
+  setPosts,
+  posts
+}) => {
+  const [currentUser, setCurrentUser] = useState("");
   const [addPost, showAddPost] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+
 
   
-
   const handleLogout = async () => {
-    localStorage.removeItem('token');
-    setCurrentUser('');
+    localStorage.removeItem("token");
+    setCurrentUser("");
     setIsLoggedIn(false);
-    setToken('');
+    setToken("");
   };
-  
 
   const handleAddPost = async () => {
     showAddPost(true);
+  };
+
+  const handleSearch = () => {
+    setShowSearch(true);
+    showAddPost(false);
   }
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("currentUser"));
-  }, [])
-  
-  
+  }, []);
 
   return (
     <div>
       <header>
-        <NavLink to='/me' className='nav-logo'>
-          <h1 className='logo-header'>jabber</h1>
+        <NavLink to="/me" className="nav-logo" onClick={() => showAddPost(false)}>
+          <h1 className="logo-header">jabber</h1>
         </NavLink>
-        <div className='left-nav'>
-          <NavLink className='nav'>
+        <div className="left-nav">
+          <NavLink className="nav" onClick={handleSearch}>
             <i className="fa-solid fa-magnifying-glass"></i>
           </NavLink>
-          <NavLink to='/messages' className='nav'>
-          <i className="fa-solid fa-envelope"></i>
+          <NavLink to="/messages" className="nav" onClick={() => showAddPost(false)}>
+            <i className="fa-solid fa-envelope"></i>
           </NavLink>
-          <NavLink to='/profile' className='nav'>
+          <NavLink to="/profile" className="nav" onClick={() => showAddPost(false)}>
             <i className="fa-solid fa-user"></i>
           </NavLink>
-          <NavLink to='/' className='nav' onClick={handleLogout}>
+          <NavLink to="/" className="nav" onClick={handleLogout}>
             Logout
           </NavLink>
         </div>
       </header>
-      <div className='banner-post-container' onClick={handleAddPost}>
-        {addPost ? <AddPost user={user} token={token} posts={posts} setPosts={setPosts} showAddPost={showAddPost} currentUser={currentUser} setCurrentUser={setCurrentUser}/> : <h3 className='addPost-default'>What's on your mind, {currentUser}?</h3>}
+      <div className="banner-post-container" onClick={handleAddPost}>
+        {addPost && !showSearch? (
+          <AddPost
+            user={user}
+            token={token}
+            posts={posts}
+            setPosts={setPosts}
+            showAddPost={showAddPost}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
+          />
+        ) : showSearch ? (
+          <Search setShowSearch={setShowSearch} showAddPost={showAddPost} />
+        ) : (
+          <h3 className="addPost-default">
+            What's on your mind, {currentUser}?
+          </h3>
+        )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

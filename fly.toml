@@ -6,8 +6,7 @@
 app = "jabber"
 primary_region = "dfw"
 
-[deploy]
-  release_command = "npm run seed"
+
 
 [http_service]
   internal_port = 3000

@@ -130,6 +130,25 @@ html {
     height: 100px;
     text-align: center;
   }
+
+  .reply-button {
+    width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10%;
+    font-size: 15px;
+    background-color: maroon;
+    color: white;
+    padding: 10px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    margin: 5px;
+  }
+
+  .reply-button:hover {
+    cursor: pointer;
+    background-color: rgb(84, 0, 0);
+  }
   
   @media screen and (max-width: 800px) {
     .messages {

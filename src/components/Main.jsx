@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
-import { Home, Register, Me, Header, Posts, AddPost, Profile, Messages } from "./";
+import { Home, Register, Me, Header, Posts, AddPost, Profile, Messages, Search } from "./";
 import { useEffect, useState } from "react";
 import { getMe } from "../api-client/auth";
 import { getAllPosts, getAllUsers } from "../api-client";
@@ -13,6 +13,7 @@ const Main = () => {
   const [posts, setPosts] = useState([]);
   const [users, setUsers] = useState([]);
   const [newPost, addNewPost] = useState([]);
+
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -72,14 +73,14 @@ const Main = () => {
           posts={posts}
           setPosts={setPosts}
         >
-          <AddPost
+            <AddPost
             posts={posts}
             setPosts={setPosts}
             user={user}
             setUser={setUser}
             token={token}
           />
-          
+          <Search />
         </Header>
       )}
       <Routes>
