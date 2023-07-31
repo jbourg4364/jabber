@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Search.css';
+import { searchPosts } from '../api-client';
 
 
-const Search = ({ setShowSearch, showAddPost }) => {
+const Search = ({ setShowSearch, showAddPost, posts, setPosts }) => {
   const [newSearch, setNewSearch] = useState('');
+  const [searchedPost, setSearchedPost] = useState([]);
 
   const handleX = () => {
     showAddPost(false);
@@ -12,10 +14,14 @@ const Search = ({ setShowSearch, showAddPost }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    
-    showAddPost(false);
-    setShowSearch(false);
+    const posts = await searchPosts(newSearch);
+    if(posts) {
+      setPosts(posts);
+    } if(!posts) {
+      window.alert(`No posts containing ${newSearch}`);
+      showAddPost(false);
+      setShowSearch(false);
+    }
   };
 
 
@@ -32,6 +38,7 @@ const Search = ({ setShowSearch, showAddPost }) => {
           <i id="exit-search" className="fa-solid fa-x fa-xl" onClick={handleX}></i>
         </form>
     </div>
+    
   )
 };
 

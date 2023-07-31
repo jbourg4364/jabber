@@ -174,3 +174,20 @@ export const deleteMessage = async (username, token, id) => {
     console.error(error);
   }
 };
+
+export const searchPosts = async (keyword) => {
+    try {
+        const response = await fetch(`${BASE}/posts/search/${keyword}`, {
+            method: "GET",
+      headers: {
+        "Content-type": "application/json",
+      },
+        });
+        const result = await response.json();
+        
+        return result;
+      
+    } catch (error) {
+        console.error(error);
+    }
+};

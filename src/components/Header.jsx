@@ -70,7 +70,7 @@ const Header = ({
             setCurrentUser={setCurrentUser}
           />
         ) : showSearch ? (
-          <Search setShowSearch={setShowSearch} showAddPost={showAddPost} />
+          <Search setShowSearch={setShowSearch} showAddPost={showAddPost} posts={posts} setPosts={setPosts}/>
         ) : (
           <h3 className="addPost-default">
             What's on your mind, {currentUser}?

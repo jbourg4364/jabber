@@ -111,6 +111,19 @@ async function getPostById(id) {
     }
 }
 
+async function searchPosts(keyword) {
+    try {
+        const { rows: post } = await client.query(`
+        SELECT * FROM posts
+        WHERE description LIKE '%' || $1 || '%';
+        `, [keyword]);
+        
+        return post;
+    } catch (error) {
+        throw error;
+    }
+}
+
 
 module.exports = {
     createPost,
@@ -119,5 +132,6 @@ module.exports = {
     deletePost,
     editPost,
     increaseLikes,
-    getPostById
+    getPostById,
+    searchPosts
 }

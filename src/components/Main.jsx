@@ -80,7 +80,8 @@ const Main = () => {
             setUser={setUser}
             token={token}
           />
-          <Search />
+          <Search posts={posts}
+          setPosts={setPosts}/>
         </Header>
       )}
       <Routes>
@@ -135,7 +136,8 @@ const Main = () => {
         element={<Messages user={user} token={token} users={users}/>}
         />
       </Routes>
-      {location.pathname !== "/" && location.pathname !== "/register" && location.pathname !== "/profile" && location.pathname !== "/messages" && (
+      {location.pathname !== "/" && location.pathname !== "/register" && location.pathname !== "/profile" && location.pathname !== "/messages" && 
+      (
         <Posts
           posts={posts}
           setPosts={setPosts}
