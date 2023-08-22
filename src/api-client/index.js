@@ -206,7 +206,23 @@ export const getPostsLikedByUser = async (userId) => {
         const result = await response.json();
         return result;
     } catch (error) {
-        console.error;
+        console.error(error);
         throw error;
     }
-}
+};
+
+export const getAllCommentsByPost = async (postId) => {
+    try {
+        const response = await fetch(`${BASE}/posts_comments/${postId}`, {
+            method: "GET",
+            headers: {
+                "Content-type": "application/json",
+            }
+        });
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};

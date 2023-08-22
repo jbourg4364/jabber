@@ -1,5 +1,5 @@
 const client = require('./client');
-const { createUser, createPost, createMessage, joinLikesAndPosts } = require('.');
+const { createUser, createPost, createMessage, addComment } = require('.');
 
 
 async function dropTables() {
@@ -7,6 +7,7 @@ async function dropTables() {
     try {
         await client.query(`
         DROP TABLE IF EXISTS messages;
+        DROP TABLE IF EXISTS post_comments;
         DROP TABLE IF EXISTS post_likes;
         DROP TABLE IF EXISTS posts;
         DROP TABLE IF EXISTS users;
@@ -44,6 +45,14 @@ async function createTables() {
           "postId" INT REFERENCES posts(id),
           "userId" INT REFERENCES users(id),
           like_date TIMESTAMP DEFAULT NOW()
+        );
+
+        CREATE TABLE post_comments (
+          id SERIAL PRIMARY KEY,
+          "postId" INT REFERENCES posts(id),
+          "userId" INT REFERENCES users(id),
+          comment_date TIMESTAMP DEFAULT NOW(),
+          comment VARCHAR(255)
         );
 
         CREATE TABLE messages (
@@ -256,6 +265,30 @@ async function createInitialMessages() {
   } catch (error) {
     throw error;
   }
+};
+
+async function createInitialComments() {
+  console.log('Creating comments...');
+  try {
+    const commentsToCreate = [
+      {
+        postId: 1,
+        userId: 5,
+        comment: "I am enjoying Jabber too!"
+      },
+      {
+        postId: 2,
+        userId: 6,
+        comment: "GEAUX JABBER!"
+      }
+    ];
+
+    const comments = await Promise.all(commentsToCreate.map(addComment));
+
+    console.log("Comments created: ", comments);
+  } catch (error) {
+    throw error;
+  }
 }
 
 async function rebuildDB() {
@@ -264,8 +297,8 @@ async function rebuildDB() {
         await createTables();
         await createInitialUsers();
         await createInitialPost();
+        await createInitialComments();
         await createInitialMessages();
-        console.log(await joinLikesAndPosts(2, 3))
     } catch (error) {
         console.log('Error during rebuildDB');
         throw error;

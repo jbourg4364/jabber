@@ -1,9 +1,14 @@
-import React, { useEffect } from 'react';
-import './Posts.css';
-import { getAllPosts, increaseLikes } from '../api-client';
-
+import React, { useEffect, useState } from "react";
+import "./Posts.css";
+import {
+  getAllPosts,
+  increaseLikes,
+  getAllCommentsByPost,
+} from "../api-client";
 
 const Posts = ({ posts, setPosts, userLikedPosts, setUserLikedPosts }) => {
+  const [openComments, setOpenComments] = useState(false);
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -12,7 +17,6 @@ const Posts = ({ posts, setPosts, userLikedPosts, setUserLikedPosts }) => {
     };
     fetchData();
   }, [setPosts]);
-
 
   const handleLikes = async (id) => {
     if (!userLikedPosts.includes(id)) {
@@ -24,25 +28,38 @@ const Posts = ({ posts, setPosts, userLikedPosts, setUserLikedPosts }) => {
         }
         return post;
       });
-      
+
       setPosts(updatedPosts);
 
-      await increaseLikes(id, localStorage.getItem('id'));
+      await increaseLikes(id, localStorage.getItem("id"));
     }
   };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const options = { year: 'numeric', month: 'long', day: 'numeric'};
-    return date.toLocaleDateString(undefined, options)
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return date.toLocaleDateString(undefined, options);
   };
 
   const formatTime = (dateString) => {
     const date = new Date(dateString);
-    const options = { hour: 'numeric', minute: 'numeric'};
+    const options = { hour: "numeric", minute: "numeric" };
     return date.toLocaleTimeString(undefined, options);
-  }
+  };
 
+  const seeComments = async (postId) => {
+    try {
+      const comments = await getAllCommentsByPost(postId);
+      if (comments) {
+        setOpenComments(true);
+      }
+
+      setComments(comments);
+      console.log(comments);
+    } catch (error) {
+      console.error("Error getting comments", error);
+    }
+  };
 
   return (
     <div>
@@ -50,7 +67,7 @@ const Posts = ({ posts, setPosts, userLikedPosts, setUserLikedPosts }) => {
         posts.map((post) => (
           <div key={post.id} className="ind-post">
             <h3 className="author">{post.creatorId}</h3>
-            <em>{`${formatDate(post.postdate)}`}</em> 
+            <em>{`${formatDate(post.postdate)}`}</em>
             <br />
             <em>{` ${formatTime(post.postdate)}`}</em>
             <p>{post.description}</p>
@@ -69,7 +86,18 @@ const Posts = ({ posts, setPosts, userLikedPosts, setUserLikedPosts }) => {
                 />{" "}
                 {post.likes}
               </h3>
-              <h3>Comments: {post.comments}</h3>
+              <h3 onClick={() => seeComments(post.id)}>
+                Comments: {post.comments}
+              </h3>
+              {openComments &&
+                comments.map(
+                  (com) =>
+                    com.postId === post.id && (
+                      <div key={com.id}>
+                        <p>{com.comment}</p>
+                      </div>
+                    )
+                )}
             </div>
           </div>
         ))

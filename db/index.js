@@ -3,5 +3,6 @@ module.exports = {
     ...require('./users'),
     ...require('./posts'),
     ...require('./messages'),
-    ...require('./posts_likes')
+    ...require('./posts_likes'),
+    ...require('./post_comments')
 }

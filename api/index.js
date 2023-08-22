@@ -59,6 +59,9 @@ router.use('/posts', postsRouter);
 const postsLikesRouter = require('./posts_likes');
 router.use('/posts_likes', postsLikesRouter);
 
+//ROUTER: /api/post_comments
+const postsCommentsRouter = require('./post_comments');
+router.use('/posts_comments', postsCommentsRouter)
 
 router.use('/', (req, res, next) => {
     res.status(404);
