@@ -1,5 +1,5 @@
 const client = require('./client');
-const { createUser, createPost, createMessage } = require('.');
+const { createUser, createPost, createMessage, joinLikesAndPosts } = require('.');
 
 
 async function dropTables() {
@@ -7,6 +7,7 @@ async function dropTables() {
     try {
         await client.query(`
         DROP TABLE IF EXISTS messages;
+        DROP TABLE IF EXISTS post_likes;
         DROP TABLE IF EXISTS posts;
         DROP TABLE IF EXISTS users;
         `);
@@ -36,6 +37,13 @@ async function createTables() {
             likes INTEGER DEFAULT 0,
             comments INTEGER DEFAULT 0,
             is_active BOOLEAN DEFAULT true
+        );
+
+        CREATE TABLE post_likes (
+          id SERIAL PRIMARY KEY,
+          "postId" INT REFERENCES posts(id),
+          "userId" INT REFERENCES users(id),
+          like_date TIMESTAMP DEFAULT NOW()
         );
 
         CREATE TABLE messages (
@@ -257,6 +265,7 @@ async function rebuildDB() {
         await createInitialUsers();
         await createInitialPost();
         await createInitialMessages();
+        console.log(await joinLikesAndPosts(2, 3))
     } catch (error) {
         console.log('Error during rebuildDB');
         throw error;

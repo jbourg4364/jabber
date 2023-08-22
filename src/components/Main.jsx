@@ -3,7 +3,7 @@ import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { Home, Register, Me, Header, Posts, AddPost, Profile, Messages, Search } from "./";
 import { useEffect, useState } from "react";
 import { getMe } from "../api-client/auth";
-import { getAllPosts, getAllUsers } from "../api-client";
+import { getAllPosts, getAllUsers, getPostsLikedByUser } from "../api-client";
 import "./Main.css";
 
 const Main = () => {
@@ -13,7 +13,8 @@ const Main = () => {
   const [posts, setPosts] = useState([]);
   const [users, setUsers] = useState([]);
   const [newPost, addNewPost] = useState([]);
-
+  const [userLikedPosts, setUserLikedPosts] = useState([]);
+  const [userId, setUserId] = useState(localStorage.getItem('id'));
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -43,6 +44,7 @@ const Main = () => {
   useEffect(() => {
     fetchPosts();
     fetchUsers();
+    fetchLikedPosts();
   }, []);
 
   const fetchPosts = async () => {
@@ -59,6 +61,20 @@ const Main = () => {
       console.error("Error loading all users", error);
     }
   };
+
+  const fetchLikedPosts = async () => {
+    if (userId) {
+      try {
+      const response = await getPostsLikedByUser(userId);
+      setUserLikedPosts(response.map((post) => post.postId));
+    } catch (error) {
+      console.error('Error fetching liked posts', error);
+    }
+    }
+    
+  };
+
+
 
   return (
     <div>
@@ -95,6 +111,7 @@ const Main = () => {
               setIsLoggedIn={setIsLoggedIn}
               setUser={setUser}
               setToken={setToken}
+              setUserId={setUserId}
             />
           }
         />
@@ -148,6 +165,9 @@ const Main = () => {
           user={user}
           token={token}
           setToken={setToken}
+          userLikedPosts={userLikedPosts}
+          setUserLikedPosts={setUserLikedPosts}
+          userId={userId}
         />
       )}
     </div>

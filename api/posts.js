@@ -1,6 +1,6 @@
 const express = require('express');
 const postsRouter = express.Router();
-const { getAllPosts, getUserById, getUser, createPost, increaseLikes, getPostById, searchPosts } = require('../db');
+const { getAllPosts, getUserById, getUser, createPost, increaseLikes, getPostById, searchPosts, joinLikesAndPosts } = require('../db');
 const {requireUser} = require('./utils');
 
 
@@ -31,11 +31,12 @@ postsRouter.post('/', async (req, res, next) => {
 postsRouter.post('/:id', async (req, res, next) => {
     try {
         const { id } = req.params;
-        const post = await getPostById(id)
+        const { userId } = req.body;
+      
      
-        const like = await increaseLikes(post.id);
-
-        console.log(like);
+        const like = await increaseLikes(id);
+        await joinLikesAndPosts(id, userId);
+     
         res.status(201).json(like);
     } catch (error) {
         next(error);

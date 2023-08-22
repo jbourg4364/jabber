@@ -22,6 +22,8 @@ const Home = ({ setIsLoggedIn, setUser }) => {
       setUsername('');
       setPassword('');
       setUser(data.user);
+      localStorage.setItem('id', data.user.id);
+
       setToken(data.token);
       localStorage.setItem('currentUser', data.user.username);
       localStorage.setItem('token', data.token);

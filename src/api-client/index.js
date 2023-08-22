@@ -47,7 +47,7 @@ export const createPost = async (description) => {
     }
 }
 
-export const increaseLikes = async (id) => {
+export const increaseLikes = async (id, userId) => {
     try {
         const response = await fetch(`${BASE}/posts/${id}`, {
             method: 'POST',
@@ -55,12 +55,13 @@ export const increaseLikes = async (id) => {
           'Content-Type': 'application/json',
         
         },
-        })
-        const result = await response.json();
-        // console.log(result.likes)
-        return result;
+        body: JSON.stringify({ userId })
+        });
+        
+        return response;
     } catch (error) {
         console.error(error);
+        throw error;
     }
 }
 
@@ -191,3 +192,21 @@ export const searchPosts = async (keyword) => {
         console.error(error);
     }
 };
+
+export const getPostsLikedByUser = async (userId) => {
+
+    try {
+        const response = await fetch(`${BASE}/posts_likes/${userId}`, {
+            method: "GET",
+            headers: {
+                "Content-type": "application/json",
+            },
+        });
+        
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error;
+        throw error;
+    }
+}

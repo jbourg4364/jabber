@@ -1,28 +1,33 @@
-import React, {useState, useEffect} from 'react';
+import React, { useEffect } from 'react';
 import './Posts.css';
-import { getAllPosts, getAllUsers, increaseLikes } from '../api-client';
+import { getAllPosts, increaseLikes } from '../api-client';
 
 
-const Posts = ({ posts, setPosts }) => {
-  const [likedPosts, setLikedPosts] = useState([]);
+const Posts = ({ posts, setPosts, userLikedPosts, setUserLikedPosts }) => {
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchData = async () => {
       const updatedPosts = await getAllPosts();
-      const sortedPosts = updatedPosts.sort((a, b) => new Date(b.postdate) - new Date(a.postdate));
-      setPosts(sortedPosts);
+      setPosts(updatedPosts);
     };
-    fetchPosts();
-  }, [])
+    fetchData();
+  }, [setPosts]);
+
 
   const handleLikes = async (id) => {
-    if (!likedPosts.includes(id)) { // Check if the post has not been liked
-      setLikedPosts([...likedPosts, id]);
-      await increaseLikes(id);
-  
-      const updatedPosts = await getAllPosts();
-      const sortedPosts = updatedPosts.sort((a, b) => new Date(b.postdate) - new Date(a.postdate));
-      setPosts(sortedPosts);
+    if (!userLikedPosts.includes(id)) {
+      setUserLikedPosts([...userLikedPosts, id]);
+
+      const updatedPosts = posts.map((post) => {
+        if (post.id === id) {
+          return { ...post, likes: post.likes + 1 };
+        }
+        return post;
+      });
+      
+      setPosts(updatedPosts);
+
+      await increaseLikes(id, localStorage.getItem('id'));
     }
   };
 
@@ -54,9 +59,9 @@ const Posts = ({ posts, setPosts }) => {
               <h3>
                 <i
                   className={
-                    likedPosts &&
-                    Array.isArray(likedPosts) &&
-                    likedPosts.includes(post.id)
+                    userLikedPosts &&
+                    Array.isArray(userLikedPosts) &&
+                    userLikedPosts.includes(post.id)
                       ? "fa-solid fa-heart"
                       : "fa-regular fa-heart"
                   }
@@ -76,4 +81,3 @@ const Posts = ({ posts, setPosts }) => {
 };
 
 export default Posts;
-
